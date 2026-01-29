@@ -1,132 +1,215 @@
-// Lista de preguntas
-const preguntas = [
+document.addEventListener("DOMContentLoaded", () => {
+
+    let audioHabilitado = false;
+    let puntos = 0;
+    let indicePregunta = 0;
+    let tiempo = 12;
+    let temporizadorId;
+
+    const btnIniciar = document.getElementById("btnIniciar");
+    const restartBtn = document.getElementById("restartBtn");
+    const resultadoDiv = document.getElementById("resultado");
+    const temp = document.getElementById("temporizador");
+
+    const preguntas = [
     {
         pregunta: "¿Cuál es la capital de Venezuela?",
         opciones: ["Madrid", "Caracas", "Miranda", "Bógota"],
-        respuesta: "Caracas"
+        respuesta: "Caracas",
+        imagen: "imagenes/venezuela.jpg"
     },
     {
-        pregunta: "¿Cuánto es 5 x 6?",
-        opciones: ["11", "30", "56", "20"],
-        respuesta: "30"
+        pregunta: "¿Cuánto es 7 x 9?",
+        opciones: ["11", "30", "63", "20"],
+        respuesta: "63",
+        imagen: "imagenes/multiplicacion.jpg"
     },
     {
         pregunta: "¿Qué Lenguaje Utiliza la Extensión .py?",
         opciones: ["Java", "C++", "Python", "HTML"],
-        respuesta: "Python"
+        respuesta: "Python",
+        imagen: "imagenes/archivocomputadora1.jpg"
     },
     {
         pregunta: "¿Cuántos Estados tiene Venezuela?",
         opciones: ["18", "24", "30", "27"],
-        respuesta: "24"
+        respuesta: "24",
+        imagen: "imagenes/mapavenezuela.jpg"
     },
     {
         pregunta: "¿Un Software es...?",
         opciones: ["La parte física de una computadora", "La unidad central de procesamiento", "El conjunto de programas, instrucciones y técnicas del sistema operativo", "Una memoria de solo lectura"],
-        respuesta: "El conjunto de programas, instrucciones y técnicas del sistema operativo"
+        respuesta: "El conjunto de programas, instrucciones y técnicas del sistema operativo",
+        imagen: "imagenes/software.jpg"
     },
     {
         pregunta: "¿Qué son los Dispositivos de Entrada?",
         opciones: ["Dispositivos Mixtos (Memoria USB)", "Introducen datos al computador (Mouse, Teclado)", "Muestran información (Monitor, Impresora)", "El componente de Almacenamiento"],
-        respuesta: "Introducen datos al computador (Mouse, Teclado)"
+        respuesta: "Introducen datos al computador (Mouse, Teclado)",
+        imagen: "imagenes/dispositivos.jpg"
     },
     {
         pregunta: "¿Qué se Puede Hacer con la Manipulación de Archivos de Datos?",
         opciones: ["Alterar intencionalmente variables independientes para observar sus efectos sobre otras", "Transformar, limpiar y organizar datos crudos para facilitar su análisis", "Cambiar datos entre sí, alterando su funcionamiento", "Leer frecuencias y almacenar datos"],
-        respuesta: "Transformar, limpiar y organizar datos crudos para facilitar su análisis"
+        respuesta: "Transformar, limpiar y organizar datos crudos para facilitar su análisis",
+        imagen: "imagenes/manipulaciondearchivodedatos1.jpg"
     },
     {
         pregunta: "La derivada de un número entero (1, 2, 3, etc...) es...",
         opciones: ["¿Su... derivada?", "El mismo número", "La multiplicación del mismo por 2", "0"],
-        respuesta: "0"
+        respuesta: "0",
+        imagen: "imagenes/derivada.jpg"
     },
     {
         pregunta: "¿Qué Extensión de Archivos Pertenece a .txt?",
         opciones: ["Bloc de Notas", "Microsoft Word", "Excel", "Python"],
-        respuesta: "Bloc de Notas"
+        respuesta: "Bloc de Notas",
+        imagen: "imagenes/archivocomputadora2.jpg"
     },
     {
         pregunta: "¿Qué Sistema Operativo Utiliza un Pinguino como Representación?",
         opciones: ["Mac", "Linux", "Windows", "Android"],
-        respuesta: "Linux"
+        respuesta: "Linux",
+        imagen: "imagenes/sistemaoperativo.jpg"
     },
     {
         pregunta: "¿Comó se Llama el Tipo de Almacenamiento que Guarda Datos, Archivos y Aplicaciones en un Equipo?",
         opciones: ["ROM", "Caché", "SSD/HDD", "CPU"],
-        respuesta: "SSD/HDD"
+        respuesta: "SSD/HDD",
+        imagen: "imagenes/almacenamientocomputadora.jpg"
     },
     {
         pregunta: "La Manipulación de Archivos de Datos Actúa Desde...",
         opciones: ["El Sistema Operativo", "El Sistema de Archivos", "La aplicación que ejecuta", "Una página web"],
-        respuesta: "El Sistema Operativo"
+        respuesta: "El Sistema Operativo",
+        imagen: "imagenes/manipulaciondearchivodedatos2.jpg"
     }
 ];
 
-// Variables globales
-let puntos = 0;
-let indicePregunta = 0;
-let tiempo = 10; // segundos
-let temporizadorId;
-
-// Función para mostrar la pregunta actual
-function mostrarPregunta() {
-    if(indicePregunta >= preguntas.length){
-        document.getElementById('pregunta').innerText = "🏁 Quiz Finalizado";
-        document.getElementById('opciones').innerHTML = "";
-        document.getElementById('temporizador').innerText = `Puntuación final: ${puntos}/${preguntas.length}`;
-        return;
+    function mezclarPreguntas() {
+        preguntas.sort(() => Math.random() - 0.5);
     }
 
-    const q = preguntas[indicePregunta];
-    document.getElementById('pregunta').innerText = q.pregunta;
+    function mostrarPregunta() {
+        if (indicePregunta >= preguntas.length) {
+            document.getElementById('pregunta').innerText = "🏁 Quiz Finalizado";
+            document.getElementById('opciones').innerHTML = "";
+            temp.innerText = `Puntuación final: ${puntos}/${preguntas.length}`;
+            restartBtn.style.display = "block";
+            return;
+        }
 
-    const opcionesDiv = document.getElementById('opciones');
-    opcionesDiv.innerHTML = "";
-    q.opciones.sort(() => Math.random() - 0.5); // mezclar opciones
+        const q = preguntas[indicePregunta];
 
-    q.opciones.forEach(opcion => {
-        const btn = document.createElement('button');
-        btn.innerText = opcion;
-        btn.onclick = () => verificarRespuesta(opcion);
-        opcionesDiv.appendChild(btn);
+        document.getElementById("progreso").style.width =
+            ((indicePregunta + 1) / preguntas.length) * 100 + "%";
+        document.getElementById('pregunta').innerText = q.pregunta;
+
+        const img = document.getElementById("imagen-pregunta");
+        if (q.imagen) {
+            img.src = q.imagen;
+            img.style.display = "block";
+        } else {
+            img.style.display = "none";
+        }
+
+        const opcionesDiv = document.getElementById('opciones');
+        opcionesDiv.innerHTML = "";
+        q.opciones.sort(() => Math.random() - 0.5);
+
+        q.opciones.forEach(opcion => {
+            const btn = document.createElement('button');
+            btn.innerText = opcion;
+            btn.dataset.correct = opcion === q.respuesta;
+
+            btn.onclick = () => {
+                document.querySelectorAll('#opciones button').forEach(b => b.disabled = true);
+                verificarRespuesta(opcion);
+            };
+
+            opcionesDiv.appendChild(btn);
+        });
+
+        tiempo = 12;
+        temp.innerText = `Tiempo: ${tiempo}s`;
+        temp.className = "tiempo-verde";
+
+        clearInterval(temporizadorId);
+        temporizadorId = setInterval(() => {
+            tiempo--;
+            temp.innerText = `Tiempo: ${tiempo}s`;
+
+            if (tiempo <= 5 && tiempo > 0 && audioHabilitado) {
+                const sonido = document.getElementById("sonido-tic");
+                if (sonido) {
+                    sonido.currentTime = 0;
+                    sonido.play();
+                }
+                temp.className = tiempo <= 3 ? "tiempo-rojo temporizador-animado" : "tiempo-amarillo temporizador-animado";
+            } else {
+                temp.classList.remove("temporizador-animado");
+            }
+
+            if (tiempo <= 0) {
+                clearInterval(temporizadorId);
+                verificarRespuesta(null);
+            }
+        }, 1000);
+    }
+
+    function verificarRespuesta(opcionElegida) {
+        clearInterval(temporizadorId);
+        const q = preguntas[indicePregunta];
+        document.querySelectorAll('#opciones button').forEach(btn => {
+            btn.classList.toggle("correcta", btn.innerText === q.respuesta);
+            btn.classList.toggle("incorrecta", btn.innerText !== q.respuesta);
+        });
+
+        if (opcionElegida === q.respuesta) puntos++;
+
+        resultadoDiv.innerText = opcionElegida === q.respuesta ? "✅ Correcto!" :
+            opcionElegida === null ? `⏱ Tiempo agotado. La respuesta correcta era: ${q.respuesta}` :
+            `❌ Incorrecto. La respuesta correcta era: ${q.respuesta}`;
+
+        const sonidoId = opcionElegida === q.respuesta ? "sonido-correcto" : "sonido-incorrecto";
+        const sonido = document.getElementById(sonidoId);
+        if (sonido) {
+            sonido.currentTime = 0;
+            sonido.play();
+        }
+
+        setTimeout(() => {
+            resultadoDiv.innerText = "";
+            indicePregunta++;
+            mostrarPregunta();
+        }, 2000);
+    }
+
+    btnIniciar.addEventListener("click", () => {
+        mezclarPreguntas();
+
+        const sonido = document.getElementById("sonido-tic");
+        if (sonido) {
+            sonido.play().then(() => {
+                sonido.pause();
+                sonido.currentTime = 0;
+                audioHabilitado = true;
+            });
+        }
+
+        btnIniciar.style.display = "none";
+        mostrarPregunta();
     });
 
-    tiempo = 10;
-    document.getElementById('temporizador').innerText = `Tiempo: ${tiempo}s`;
+    restartBtn.addEventListener("click", () => {
+        puntos = 0;
+        indicePregunta = 0;
+        tiempo = 12;
 
-    clearInterval(temporizadorId);
-    temporizadorId = setInterval(() => {
-        tiempo--;
-        document.getElementById('temporizador').innerText = `Tiempo: ${tiempo}s`;
-        if(tiempo <= 0){
-            clearInterval(temporizadorId);
-            document.getElementById('resultado').innerText = `⏰ Tiempo agotado. La respuesta correcta era: ${q.respuesta}`;
-            setTimeout(() => {
-                document.getElementById('resultado').innerText = "";
-                indicePregunta++;
-                mostrarPregunta();
-            }, 2000);
-        }
-    }, 1000);
-}
+        mezclarPreguntas();
+        restartBtn.style.display = "none";
+        resultadoDiv.innerText = "";
 
-// Función para verificar respuesta
-function verificarRespuesta(opcionElegida){
-    clearInterval(temporizadorId);
-    const q = preguntas[indicePregunta];
-    if(opcionElegida === q.respuesta){
-        puntos++;
-        document.getElementById('resultado').innerText = "✅ Correcto!";
-    } else {
-        document.getElementById('resultado').innerText = `❌ Incorrecto. La respuesta correcta era: ${q.respuesta}`;
-    }
-
-    setTimeout(() => {
-        document.getElementById('resultado').innerText = "";
-        indicePregunta++;
         mostrarPregunta();
-    }, 2000);
-}
-
-// Iniciar quiz al cargar página
-window.onload = mostrarPregunta;
+    });
+});
