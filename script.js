@@ -165,11 +165,18 @@ document.addEventListener("DOMContentLoaded", () => {
             btn.classList.toggle("incorrecta", btn.innerText !== q.respuesta);
         });
 
-        if (opcionElegida === q.respuesta) puntos++;
+       resultadoDiv.classList.remove("correcto", "incorrecto"); // limpiar clases previas
 
-        resultadoDiv.innerText = opcionElegida === q.respuesta ? "✅ Correcto!" :
-            opcionElegida === null ? `⏱ Tiempo agotado. La respuesta correcta era: ${q.respuesta}` :
-            `❌ Incorrecto. La respuesta correcta era: ${q.respuesta}`;
+if(opcionElegida === q.respuesta){
+    resultadoDiv.innerText = "✅ Correcto!";
+    resultadoDiv.classList.add("correcto");
+} else if(opcionElegida === null){
+    resultadoDiv.innerText = `⏱ Tiempo agotado. La respuesta correcta era: ${q.respuesta}`;
+    resultadoDiv.classList.add("incorrecto");
+} else {
+    resultadoDiv.innerText = `❌ Incorrecto. La respuesta correcta era: ${q.respuesta}`;
+    resultadoDiv.classList.add("incorrecto");
+}
 
         const sonidoId = opcionElegida === q.respuesta ? "sonido-correcto" : "sonido-incorrecto";
         const sonido = document.getElementById(sonidoId);
