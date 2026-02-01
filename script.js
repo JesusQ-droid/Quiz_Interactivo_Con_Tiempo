@@ -10,6 +10,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const restartBtn = document.getElementById("restartBtn");
     const resultadoDiv = document.getElementById("resultado");
     const temp = document.getElementById("temporizador");
+    const descripcion = document.getElementById("descripcion");
+    const imgPregunta = document.getElementById("imagen-pregunta");
+    const imagenResultado = document.getElementById("imagen-resultado");
+    descripcion.innerText = "🧠 Pon a prueba tus conocimientos de informática, Venezuela y matemáticas. ¡Tienes 12 segundos por pregunta!";
+    descripcion.style.display = "block";  
+    descripcion.className = "descripcion descripcion-inicio";
 
     const preguntas = [
     {
@@ -83,7 +89,55 @@ document.addEventListener("DOMContentLoaded", () => {
         opciones: ["El Sistema Operativo", "El Sistema de Archivos", "La aplicación que ejecuta", "Una página web"],
         respuesta: "El Sistema Operativo",
         imagen: "imagenes/manipulaciondearchivodedatos2.jpg"
-    }
+    },
+{
+  pregunta: "¿Por qué se realizan copias de seguridad (backups) de los archivos?",
+  opciones: ["Para ocupar más espacio", "Para cambiar el formato", "Para recuperar datos en caso de pérdida o daño", "Para acelerar la computadora"],
+  respuesta: "Para recuperar datos en caso de pérdida o daño",
+  imagen: "imagenes/archivos.jpg"
+},
+{
+  pregunta: "¿Cuánto es 12 × 8?",
+  opciones: ["88", "96", "108", "92"],
+  respuesta: "96",
+  imagen: "imagenes/multiplicacion2.jpg"
+},
+{
+  pregunta: "¿Qué significa CPU?",
+  opciones: ["Central Program Unit", "Central Processing Unit", "Computer Personal Unit", "Control Process Utility"],
+  respuesta: "Central Processing Unit",
+  imagen: "imagenes/cpu.jpg"
+},
+{
+  pregunta: "¿Cuánto es la raíz cuadrada de 81?",
+  opciones: ["7", "8", "9", "10"],
+  respuesta: "9",
+  imagen: "imagenes/raizcuadrada.jpg"
+},
+{
+  pregunta: "¿Qué Componente del Computador Permite ver la Información en Pantalla?",
+  opciones: ["RAM", "Monitor", "Disco duro", "Teclado"],
+  respuesta: "Monitor",
+  imagen: "imagenes/computacion.jpg"
+},
+{
+  pregunta: "¿Cómo se Llama la Figura de la Imágen?",
+  opciones: ["Cuadrado Rectángulo", "Triángulo Rectángulo", "Circulo Cuadrado", "Triángulo Cuadrado"],
+  respuesta: "Triángulo Rectángulo",
+  imagen: "imagenes/figura.jpg"
+},
+{
+  pregunta: "¿Qué significa 'guardar cambios' en un archivo?",
+  opciones: ["Cerrar el programa", "Eliminar el archivo", "Escribir los datos modificados en el almacenamiento", "Copiar el archivo a la papelera"],
+  respuesta: "Escribir los datos modificados en el almacenamiento",
+  imagen: "imagenes/archivos2.jpg"
+},
+{
+  pregunta: "¿Qué etiqueta HTML se usa para enlazar un archivo JavaScript?",
+  opciones: ["<style>", "<script>", "<link>", "<meta>"],
+  respuesta: "<script>",
+  imagen: "imagenes/paginaweb.jpg"
+}
 ];
 
     function mezclarPreguntas() {
@@ -95,6 +149,19 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById('pregunta').innerText = "🏁 Quiz Finalizado";
             document.getElementById('opciones').innerHTML = "";
             temp.innerText = `Puntuación final: ${puntos}/${preguntas.length}`;
+            descripcion.style.display = "block";
+            imgPregunta.style.display = "none";
+            imagenResultado.style.display = "block";
+            const mitad = preguntas.length / 2;   // 👈 AGREGAR ESTA LÍNEA
+            if (puntos >= mitad) {
+     descripcion.innerText = "🎉 ¡Excelente trabajo! Has respondido la mitad o más de las preguntas correctamente.";
+     descripcion.className = "descripcion descripcion-exito"; 
+     imagenResultado.src = "imagenes/victoria.jpg";
+} else {
+        descripcion.innerText = "No has respondido más de la mitad de preguntas, pero no te preocupes, ¡siempre puedes intentarlo de nuevo!, y además has podido aprender algo más a través de este quiz. ¡Sigue intentandolo!.";
+        descripcion.className = "descripcion descripcion-fallo";
+        imagenResultado.src = "imagenes/derrota.jpg";
+ }
             restartBtn.style.display = "block";
             return;
         }
@@ -168,6 +235,7 @@ document.addEventListener("DOMContentLoaded", () => {
        resultadoDiv.classList.remove("correcto", "incorrecto"); // limpiar clases previas
 
 if(opcionElegida === q.respuesta){
+    puntos++;
     resultadoDiv.innerText = "✅ Correcto!";
     resultadoDiv.classList.add("correcto");
 } else if(opcionElegida === null){
@@ -193,6 +261,9 @@ if(opcionElegida === q.respuesta){
     }
 
     btnIniciar.addEventListener("click", () => {
+    descripcion.style.display = "none";
+    imagenResultado.style.display = "none";
+        descripcion.innerText = "";
         mezclarPreguntas();
 
         const sonido = document.getElementById("sonido-tic");
@@ -209,6 +280,8 @@ if(opcionElegida === q.respuesta){
     });
 
     restartBtn.addEventListener("click", () => {
+    descripcion.style.display = "none";
+    imagenResultado.style.display = "none";
         puntos = 0;
         indicePregunta = 0;
         tiempo = 12;

@@ -7,7 +7,9 @@
 </head>
 <body>
     <div class="quiz-container">
-        <button id="btnIniciar">Iniciar Quiz</button>
+        <div id="descripcion" class="descripcion"></div>
+        <img id="imagen-resultado" class="imagen-resultado" />
+        <button id="btnIniciar" class="btn btn-iniciar">Iniciar Quiz</button>
         <h1 class="titulo-dorado">QUIZ INTERACTIVO</h1>
         <h2 id="pregunta" class="titulo-dorado"></h2>
         <img id="imagen-pregunta" src="" alt="Imagen de la pregunta" style="max-width:200px; display:none; margin:5px 0;">
@@ -15,7 +17,7 @@
         <p id="temporizador" class="temporizador-rojo"></p>
         <button id="siguienteBtn" style="display:none;">Siguiente</button>
         <div id="resultado"></div>
-        <button id="restartBtn" style="display:none;">Volver a empezar</button>
+        <button id="restartBtn" class="btn btn-restart">Reiniciar</button>
         <audio id="sonido-tic" src="tic.mp3" preload="auto"></audio>
         <audio id="sonido-correcto" src="correcto.mp3"></audio>
         <audio id="sonido-incorrecto" src="incorrecto.mp3"></audio> 

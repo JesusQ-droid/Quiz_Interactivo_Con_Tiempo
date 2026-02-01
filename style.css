@@ -106,7 +106,8 @@ button:hover {
 
 #imagen-pregunta {
     width: 100%;
-    max-width: 700px;
+    max-width: 300px;
+    max-height: 200px;
     aspect-ratio: 16 / 9; /* formato horizontal */
     object-fit: cover;
     border-radius: 14px;
@@ -212,6 +213,97 @@ button:hover {
     #pregunta { font-size: 20px; }
     #temporizador { font-size: 20px; }
 }
+.descripcion {
+    margin: 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+    transition: 0.3s;
+}
+
+/* Antes de iniciar */
+.descripcion-inicio {
+    color: #6fdc8c; /* verde claro */
+}
+
+/* Aprueba */
+.descripcion-exito {
+    color: #4ade80; /* verde más vivo */
+}
+
+/* Falla */
+.descripcion-fallo {
+    color: #60a5fa; /* azul claro */
+}
+.descripcion {
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+/* ===== Botones base ===== */
+.btn {
+    padding: 12px 28px;
+    font-size: 16px;
+    font-weight: bold;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+
+/* Hover */
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.25);
+}
+
+/* Click */
+.btn:active {
+    transform: scale(0.96);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+}
+
+/* ===== Iniciar (verde) ===== */
+.btn-iniciar {
+    background: linear-gradient(135deg, #4ade80, #22c55e);
+    color: white;
+}
+
+/* ===== Reiniciar (azul) ===== */
+.btn-restart {
+    background: linear-gradient(135deg, #60a5fa, #3b82f6);
+    color: white;
+}
+
+/* Oculto cuando no se usa */
+#restartBtn {
+    display: none;
+}
+.descripcion {
+    display: none; /* oculto por defecto */
+    margin: 15px 0;
+    font-size: 18px;
+    font-weight: bold;
+}
+.imagen-resultado {
+    display: none;
+    width: 180px;
+    margin: 15px auto;
+    animation: aparecer 0.4s ease;
+}
+
+@keyframes aparecer {
+    from { opacity: 0; transform: scale(0.8); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+
+
+
 
 
 
